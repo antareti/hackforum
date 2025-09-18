@@ -160,8 +160,6 @@
         </form>
     </div>
     <script>
-        // Это приложение не использует базу данных Firestore.
-        // Все данные хранятся в памяти браузера и теряются при обновлении страницы.
         document.addEventListener('DOMContentLoaded', () => {
             const messagesContainer = document.getElementById('messages-container');
             const newMessageForm = document.getElementById('new-message-form');
@@ -189,19 +187,52 @@
                 "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%239b59b6' d='M12 2A10 10 0 1 0 12 22A10 10 0 1 0 12 2Zm0 13.5a1.5 1.5 0 1 1-1.5 1.5a1.5 1.5 0 0 1 1.5-1.5Z'/%3E%3C/svg%3E",
                 "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233498db' d='M12 2A10 10 0 1 0 12 22A10 10 0 1 0 12 2Zm.5 14a.5.5 0 0 1-.5.5h-5.5a.5.5 0 0 1-.5-.5v-4.5a.5.5 0 0 1 .5-.5h5.5a.5.5 0 0 1 .5.5Z'/%3E%3C/svg%3E"
             ];
-
+            
             let isAdmin = false;
-            const userId = 'user-' + Math.random().toString(36).substring(2, 9);
+            let userId;
             let userPoints = 0;
             let userAvatar = DEFAULT_AVATAR;
-
-            // Имитация базы данных с локальным массивом
             let messages = [];
 
-            // Имитация данных пользователя
-            const users = {};
-            users[userId] = { points: 0, avatar: DEFAULT_AVATAR };
+            // Имитация базы данных с использованием localStorage
+            const saveToLocalStorage = () => {
+                localStorage.setItem('messages', JSON.stringify(messages));
+                localStorage.setItem('userId', userId);
+                localStorage.setItem('userPoints', userPoints);
+                localStorage.setItem('userAvatar', userAvatar);
+            };
 
+            const loadFromLocalStorage = () => {
+                const savedMessages = localStorage.getItem('messages');
+                const savedUserId = localStorage.getItem('userId');
+                const savedUserPoints = localStorage.getItem('userPoints');
+                const savedUserAvatar = localStorage.getItem('userAvatar');
+
+                if (savedMessages) {
+                    messages = JSON.parse(savedMessages);
+                }
+                if (savedUserId) {
+                    userId = savedUserId;
+                } else {
+                    userId = 'user-' + Math.random().toString(36).substring(2, 9);
+                }
+                if (savedUserPoints) {
+                    userPoints = parseInt(savedUserPoints, 10);
+                }
+                if (savedUserAvatar) {
+                    userAvatar = savedUserAvatar;
+                }
+
+                // Обновляем аватар для админа, если он был сохранен
+                if (userId === 'admin_user') { // Use a fixed ID for admin to persist state across reloads
+                    userAvatar = ADMIN_AVATAR;
+                    isAdmin = true;
+                    document.body.classList.add('is-admin');
+                    adminStatus.textContent = 'Статус: Администратор';
+                    adminStatus.className = 'text-sm font-semibold text-green-500';
+                }
+            };
+            
             const updateUI = () => {
                 // Обновляем UI пользователя
                 userIdDisplay.textContent = `Ваш ID: ${userId}`;
@@ -234,7 +265,7 @@
 
                     const date = new Date(msg.timestamp).toLocaleString();
                     const senderName = msg.isAdmin ? 'Админ' : 'Пользователь';
-                    const senderAvatar = users[msg.userId]?.avatar || DEFAULT_AVATAR;
+                    const senderAvatar = msg.isAdmin ? ADMIN_AVATAR : AVATARS.find(a => a === localStorage.getItem(`userAvatar_${msg.userId}`)) || DEFAULT_AVATAR;
                     const points = msg.points || 0;
                     
                     messageEl.innerHTML = `
@@ -300,6 +331,7 @@
                     
                     messages.unshift(newMessage); // Добавляем в начало
                     messageTextarea.value = '';
+                    saveToLocalStorage();
                     updateUI();
                 }
             });
@@ -309,12 +341,16 @@
                 const password = adminPassInput.value;
                 if (password === ADMIN_PASSWORD) {
                     isAdmin = true;
+                    // Для сохранения статуса админа, используем фиксированный ID
+                    userId = 'admin_user';
+                    
                     document.body.classList.add('is-admin');
                     adminStatus.textContent = 'Статус: Администратор';
                     adminStatus.className = 'text-sm font-semibold text-green-500';
                     adminPassInput.value = '';
                     userAvatar = ADMIN_AVATAR; // Обновляем аватар для текущего пользователя
-                    users[userId].avatar = ADMIN_AVATAR; // Сохраняем аватар в "базе данных"
+                    
+                    saveToLocalStorage();
                     updateUI();
                 } else {
                     const modal = document.createElement('div');
@@ -335,6 +371,7 @@
                 if (!isAdmin) return;
                 const messageId = e.target.closest('.message-card').dataset.id;
                 messages = messages.filter(msg => msg.id !== messageId);
+                saveToLocalStorage();
                 updateUI();
             };
 
@@ -345,6 +382,7 @@
                 const messageIndex = messages.findIndex(msg => msg.id === messageId);
                 if (messageIndex > -1) {
                     messages[messageIndex].points = (messages[messageIndex].points || 0) + 1;
+                    saveToLocalStorage();
                     updateUI();
                 }
             };
@@ -356,6 +394,7 @@
                 if (messageIndex > -1) {
                     messages[messageIndex].points = (messages[messageIndex].points || 0) + 1;
                     userPoints++;
+                    saveToLocalStorage();
                     updateUI();
                 }
             };
@@ -365,7 +404,8 @@
                 if (e.target.classList.contains('avatar-option')) {
                     if (userPoints > 0 || isAdmin) {
                         userAvatar = e.target.dataset.url;
-                        users[userId].avatar = userAvatar; // Сохраняем выбор в "базе данных"
+                        localStorage.setItem(`userAvatar_${userId}`, userAvatar);
+                        saveToLocalStorage();
                         updateUI();
                     } else {
                         const modal = document.createElement('div');
@@ -391,6 +431,7 @@
             fontSelect.addEventListener('change', handleFontSelection);
 
             // Начальная настройка
+            loadFromLocalStorage();
             const savedFont = localStorage.getItem('selectedFont');
             if (savedFont) {
                 document.documentElement.style.setProperty('--hacker-font', savedFont);
