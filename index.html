@@ -3,20 +3,73 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Продвинутая анимация фото</title>
+<title>Сохранение анимации как видео</title>
 <style>
-  body { text-align: center; background: #111; color: #fff; font-family: sans-serif; padding: 20px; }
-  canvas { border: 1px solid #444; margin-top: 20px; background: #222; }
-  input, button { margin: 10px; padding: 10px; font-size: 16px; cursor: pointer; }
+  body { 
+    text-align: center; 
+    background: linear-gradient(135deg, #1a1a1a, #111); 
+    color: #fff; 
+    font-family: 'Segoe UI', Tahoma, sans-serif; 
+    padding: 30px;
+  }
+  h1 {
+    font-size: 2em; 
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 4px #000;
+  }
+  canvas { 
+    border-radius: 12px; 
+    border: 2px solid #555; 
+    margin-top: 20px; 
+    background: #222; 
+    box-shadow: 0 0 20px rgba(0,0,0,0.7);
+  }
+  .controls {
+    margin-top: 20px; 
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 15px;
+  }
+  input[type="file"] {
+    padding: 10px; 
+    border-radius: 8px; 
+    border: 1px solid #555; 
+    background: #333; 
+    color: #fff; 
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  input[type="file"]:hover { background: #444; }
+  button {
+    padding: 12px 25px; 
+    font-size: 16px; 
+    border-radius: 8px; 
+    border: none; 
+    cursor: pointer; 
+    background: linear-gradient(90deg, #ff6a00, #ee0979); 
+    color: #fff; 
+    font-weight: bold; 
+    transition: 0.3s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  }
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+  }
 </style>
 </head>
 <body>
 
-<h1>Живое фото с анимацией</h1>
+<h1>Живое фото с анимацией и видео</h1>
 
-<input type="file" id="fileInput" accept="image/*">
-<br>
-<button onclick="startAnimation()">Начать анимацию</button>
+<div class="controls">
+  <input type="file" id="fileInput" accept="image/*">
+  <button onclick="startAnimation()">Начать анимацию</button>
+  <button onclick="startRecording()">Начать запись видео</button>
+  <button onclick="stopRecording()">Остановить и скачать видео</button>
+</div>
+
 <canvas id="canvas" width="400" height="600"></canvas>
 
 <script>
@@ -26,6 +79,9 @@ let img = new Image();
 let angle = 0;
 let animating = false;
 let blinkTimer = 0;
+
+let mediaRecorder;
+let recordedChunks = [];
 
 // Загрузка изображения
 document.getElementById('fileInput').addEventListener('change', function(e){
@@ -39,7 +95,7 @@ document.getElementById('fileInput').addEventListener('change', function(e){
   reader.readAsDataURL(file);
 });
 
-// Анимация
+// Анимация с глитч-эффектом
 function animate(){
   if(!animating) return;
   ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -61,21 +117,29 @@ function animate(){
   ctx.scale(scale, scale);
   ctx.drawImage(img, -canvas.width/2, -canvas.height/2, canvas.width, canvas.height);
 
-  // Простое моргание глаз (симулируется прямоугольником поверх глаз)
+  // Моргание глаз
   blinkTimer += 0.05;
-  if(blinkTimer % 5 > 4.8){ // моргание каждые ~5 секунд
+  if(blinkTimer % 5 > 4.8){
     ctx.fillStyle = 'rgba(0,0,0,0.6)';
-    ctx.fillRect(-20, -50, 40, 5); // пример положения глаз, можно настроить под фото
+    ctx.fillRect(-20, -50, 40, 5);
   }
-
   ctx.restore();
 
-  // Лёгкое движение волос/одежды (имитация ветра)
+  // Лёгкое движение волос/одежды
   ctx.globalAlpha = 0.1;
-  for(let i=0;i<2;i++){
-    ctx.drawImage(canvas, rand(-2,2), rand(-2,2), canvas.width, canvas.height);
+  for(let i=0;i<3;i++){
+    ctx.drawImage(canvas, rand(-3,3), rand(-3,3), canvas.width, canvas.height);
   }
   ctx.globalAlpha = 1;
+
+  // Глитч эффект: случайные горизонтальные смещения строк
+  const glitchLines = 5;
+  for(let i=0; i<glitchLines; i++){
+    const y = Math.floor(Math.random() * canvas.height);
+    const h = Math.floor(Math.random() * 8 + 2);
+    const offset = Math.floor(Math.random() * 20 - 10);
+    ctx.drawImage(canvas, 0, y, canvas.width, h, offset, y, canvas.width, h);
+  }
 
   angle += 0.05;
   requestAnimationFrame(animate);
@@ -89,6 +153,32 @@ function startAnimation(){
 }
 
 function rand(min,max){ return Math.random()*(max-min)+min; }
+
+// Запись видео
+function startRecording(){
+  if(!animating) return alert("Сначала запустите анимацию!");
+  recordedChunks = [];
+  const stream = canvas.captureStream(30); // 30 fps
+  mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+  mediaRecorder.ondataavailable = e => { if(e.data.size > 0) recordedChunks.push(e.data); };
+  mediaRecorder.start();
+  alert("Запись началась");
+}
+
+function stopRecording(){
+  if(!mediaRecorder) return;
+  mediaRecorder.onstop = () => {
+    const blob = new Blob(recordedChunks, { type: 'video/webm' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'animated_photo.webm';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+  mediaRecorder.stop();
+  alert("Запись остановлена, видео готово к скачиванию");
+}
 </script>
 
 </body>
