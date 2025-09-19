@@ -1,136 +1,76 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Форум доброго хакера</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Fira+Code:wght@400;700&family=Anonymous+Pro&family=Source+Code+Pro&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Source Code Pro', monospace;
-            background-color: #0a0a0a;
-            color: #00ff00;
-        }
-        .header-bg {
-            background-color: #111111;
-            border-bottom: 2px solid #222222;
-        }
-        .main-container {
-            max-width: 1200px;
-        }
-        .section-header {
-            background-color: #1c1c1c;
-            color: #00ff00;
-            border-bottom: 1px solid #3a3a3a;
-        }
-        .green-accent { color: #00ff00; }
-        .tab-active {
-            background-color: #1c1c1c;
-            border-color: #00ff00;
-            color: #00ff00;
-        }
-        .message-card {
-            background-color: #161616;
-            border: 1px solid #282828;
-            border-left: 3px solid #00ff00;
-            padding: 16px;
-            border-radius: 8px;
-        }
-        .vt323 { font-family: 'VT323', monospace; }
-        .glitch-text { animation: glitch 1.5s infinite; text-shadow: -1px 0 #ff00ff, 1px 0 #00ffff; }
-        @keyframes glitch {
-            0%, 50%, 100% { text-shadow: -1px -1px #ff00ff, 1px 1px #00ffff; }
-            25% { text-shadow: 1px 1px #ff00ff, -1px -1px #00ffff; }
-            75% { text-shadow: -1px 1px #ff00ff, 1px -1px #00ffff; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Форум доброго хакера</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Source+Code+Pro&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'Source Code Pro', monospace; background-color: #0a0a0a; color: #00ff00; }
+.header-bg { background-color: #111; border-bottom: 2px solid #222; }
+.main-container { max-width: 1200px; }
+.section-header { background-color: #1c1c1c; color: #00ff00; border-bottom: 1px solid #3a3a3a; }
+.tab-active { background-color: #1c1c1c; border-color: #00ff00; color: #00ff00; }
+.message-card { background-color: #161616; border: 1px solid #282828; border-left: 3px solid #00ff00; padding: 16px; border-radius: 8px; }
+.vt323 { font-family: 'VT323', monospace; }
+</style>
 </head>
-<body class="bg-gray-900 text-gray-300">
-    <div class="header-bg py-4 mb-4">
-        <div class="main-container mx-auto flex justify-between items-center px-4">
-            <div id="forum-title" class="text-3xl font-bold vt323 text-gray-50 glitch-text">Форум доброго хакера</div>
-        </div>
+<body>
+<div class="header-bg py-4 mb-4">
+    <div class="main-container mx-auto flex justify-between items-center px-4">
+        <div class="text-3xl font-bold vt323 text-gray-50">Форум доброго хакера</div>
+    </div>
+</div>
+
+<div class="main-container mx-auto px-4">
+    <div class="bg-green-600 text-black font-bold p-3 text-center rounded-md mb-6">
+        СТАТУС: READ-ONLY. Новые сообщения создаются через GitHub Issues.
     </div>
 
-    <div class="main-container mx-auto px-4">
-        <div class="bg-green-600 text-white font-bold p-3 text-center rounded-md mb-6 glitch-text" style="background-color: #00ff00; color: #1a1a1a;">
-            СТАТУС: READ-ONLY. Новые сообщения создаются через GitHub Issues.
-        </div>
-
-        <div id="forum-content" class="flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-6">
-            <!-- Левая панель -->
-            <div class="w-full lg:w-3/4 flex flex-col">
-                <div id="tab-buttons" class="flex space-x-2 border-b border-gray-700 mb-4" style="border-color: #00ff00;">
-                    <button data-tab="general" class="tab-button px-4 py-2 rounded-t-md text-sm font-semibold tab-active" style="border-color: #00ff00;">Общие</button>
-                    <button data-tab="hacking" class="tab-button px-4 py-2 rounded-t-md text-sm font-semibold hover:bg-gray-700">Взлом</button>
-                    <button data-tab="leaks" class="tab-button px-4 py-2 rounded-t-md text-sm font-semibold hover:bg-gray-700">Утечки</button>
-                    <button data-tab="coding" class="tab-button px-4 py-2 rounded-t-md text-sm font-semibold hover:bg-gray-700"><i class="fas fa-code"></i> Кодинг</button>
-                    <button data-tab="marketplace" class="tab-button px-4 py-2 rounded-t-md text-sm font-semibold hover:bg-gray-700"><i class="fas fa-store"></i> Маркет</button>
-                </div>
-
-                <div class="p-4 rounded-md" style="background-color: #1a1a1a;">
-                    <h2 id="section-title" class="text-white text-lg font-semibold mb-4 glitch-text" style="color: #00ff00;">Общие</h2>
-                    
-                    <div id="messages-container" class="space-y-4 mb-6">
-                        <!-- Пример сообщений -->
-                        <div class="message-card">
-                            <div class="flex justify-between items-center mb-2">
-                                <div class="flex items-center text-sm font-semibold">
-                                    <img src="https://via.placeholder.com/32" alt="Аватар" class="user-avatar" style="border: 1px solid #00ff00; border-radius: 50%; margin-right: 8px;">
-                                    <span class="vt323">Админ</span>
-                                </div>
-                                <div class="text-xs" style="color: #888;">1 час назад</div>
-                            </div>
-                            <p style="color: #fff;">Добро пожаловать на форум! Чтение сообщений доступно всем.</p>
-                        </div>
-                        <div class="message-card">
-                            <div class="flex justify-between items-center mb-2">
-                                <div class="flex items-center text-sm font-semibold">
-                                    <img src="https://via.placeholder.com/32/50e3c2" alt="Аватар" class="user-avatar" style="border: 1px solid #00ff00; border-radius: 50%; margin-right: 8px;">
-                                    <span class="vt323">user123</span>
-                                </div>
-                                <div class="text-xs" style="color: #888;">2 часа назад</div>
-                            </div>
-                            <p style="color: #fff;">Привет! Это read-only форум, но можно писать через GitHub.</p>
-                        </div>
-                    </div>
-
-                    <!-- Read-only форма -->
-                    <form class="p-6 rounded-lg shadow-md" style="background-color: #1a1a1a; border: 1px solid #00ff00;">
-                        <textarea rows="4" class="w-full p-3 rounded-lg bg-gray-900 border text-white mb-4" placeholder="Форум в режиме только для чтения. Чтобы написать, создайте Issue на GitHub." readonly style="background-color: #0a0a0a; border-color: #00ff00; color: #00ff00;"></textarea>
-                        <a href="https://github.com/YOUR_USERNAME/YOUR_REPO/issues/new" target="_blank" class="w-full inline-block text-center px-4 py-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 transition-colors" style="background-color: #00ff00; color: #1a1a1a;">Создать сообщение на GitHub</a>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Правая панель -->
-            <div class="w-full lg:w-1/4 space-y-4">
-                <div class="p-4 rounded-md" style="background-color: #1a1a1a; border: 1px solid #00ff00;">
-                    <h3 class="text-white font-semibold mb-2" style="color: #00ff00;">Недавняя активность</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center">
-                            <img src="https://via.placeholder.com/32/50e3c2" alt="Avatar" class="user-avatar" style="border-color: #00ff00;">
-                            <div>
-                                <p class="text-gray-300 text-sm" style="color: #888;">Пример сообщения</p>
-                                <p class="text-gray-500 text-xs" style="color: #555;">4 часа назад</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <img src="https://via.placeholder.com/32/f5a623" alt="Avatar" class="user-avatar" style="border-color: #00ff00;">
-                            <div>
-                                <p class="text-gray-300 text-sm" style="color: #888;">Ещё одно сообщение</p>
-                                <p class="text-gray-500 text-xs" style="color: #555;">5 часов назад</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div id="messages-container" class="space-y-4">
+        <!-- Сообщения будут подгружаться здесь -->
     </div>
+
+    <a href="https://github.com/YOUR_USERNAME/YOUR_REPO/issues/new" target="_blank"
+       class="w-full inline-block text-center px-4 py-3 bg-green-600 text-black rounded-lg font-bold mt-6 hover:bg-green-700">
+       Создать сообщение на GitHub
+    </a>
+</div>
+
+<script>
+const GITHUB_USER = 'YOUR_USERNAME';
+const GITHUB_REPO = 'YOUR_REPO';
+
+async function loadMessages() {
+    const url = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/issues`;
+    try {
+        const res = await fetch(url);
+        const issues = await res.json();
+        const container = document.getElementById('messages-container');
+        container.innerHTML = '';
+        issues.forEach(issue => {
+            const div = document.createElement('div');
+            div.className = 'message-card';
+            div.innerHTML = `
+                <div class="flex justify-between items-center mb-2">
+                    <div class="flex items-center text-sm font-semibold">
+                        <img src="${issue.user.avatar_url}" alt="Аватар" class="user-avatar" style="border:1px solid #00ff00;border-radius:50%;margin-right:8px;">
+                        <span class="vt323">${issue.user.login}</span>
+                    </div>
+                    <div class="text-xs" style="color: #888;">${new Date(issue.created_at).toLocaleString()}</div>
+                </div>
+                <p style="color:#fff;">${issue.body || '(Пустое сообщение)'}</p>
+            `;
+            container.appendChild(div);
+        });
+    } catch(e) {
+        console.error('Ошибка при загрузке сообщений:', e);
+    }
+}
+
+loadMessages();
+</script>
 </body>
 </html>
