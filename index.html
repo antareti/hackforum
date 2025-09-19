@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Анимация фотографии</title>
+<title>Продвинутая анимация фото</title>
 <style>
   body { text-align: center; background: #111; color: #fff; font-family: sans-serif; padding: 20px; }
   canvas { border: 1px solid #444; margin-top: 20px; background: #222; }
@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<h1>Анимация фотографии</h1>
+<h1>Живое фото с анимацией</h1>
 
 <input type="file" id="fileInput" accept="image/*">
 <br>
@@ -25,6 +25,7 @@ const ctx = canvas.getContext('2d');
 let img = new Image();
 let angle = 0;
 let animating = false;
+let blinkTimer = 0;
 
 // Загрузка изображения
 document.getElementById('fileInput').addEventListener('change', function(e){
@@ -43,16 +44,38 @@ function animate(){
   if(!animating) return;
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  // Небольшое колебание изображения (имитация дыхания / движения головы)
-  const dx = Math.sin(angle) * 5;
+  // Фон
+  const bgGradient = ctx.createLinearGradient(0,0,0,canvas.height);
+  bgGradient.addColorStop(0,'#333');
+  bgGradient.addColorStop(1,'#111');
+  ctx.fillStyle = bgGradient;
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  // Плавное колебание фото
+  const dx = Math.sin(angle*0.7) * 4;
   const dy = Math.cos(angle*1.2) * 3;
-  const scale = 1 + Math.sin(angle*0.7)*0.02;
+  const scale = 1 + Math.sin(angle*0.5)*0.015;
 
   ctx.save();
   ctx.translate(canvas.width/2 + dx, canvas.height/2 + dy);
   ctx.scale(scale, scale);
   ctx.drawImage(img, -canvas.width/2, -canvas.height/2, canvas.width, canvas.height);
+
+  // Простое моргание глаз (симулируется прямоугольником поверх глаз)
+  blinkTimer += 0.05;
+  if(blinkTimer % 5 > 4.8){ // моргание каждые ~5 секунд
+    ctx.fillStyle = 'rgba(0,0,0,0.6)';
+    ctx.fillRect(-20, -50, 40, 5); // пример положения глаз, можно настроить под фото
+  }
+
   ctx.restore();
+
+  // Лёгкое движение волос/одежды (имитация ветра)
+  ctx.globalAlpha = 0.1;
+  for(let i=0;i<2;i++){
+    ctx.drawImage(canvas, rand(-2,2), rand(-2,2), canvas.width, canvas.height);
+  }
+  ctx.globalAlpha = 1;
 
   angle += 0.05;
   requestAnimationFrame(animate);
@@ -64,6 +87,8 @@ function startAnimation(){
   animating = true;
   animate();
 }
+
+function rand(min,max){ return Math.random()*(max-min)+min; }
 </script>
 
 </body>
