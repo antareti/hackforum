@@ -3,75 +3,94 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Генератор мультяшных женщин без файлов</title>
+<title>Художественная генерация женщины</title>
 <style>
-  body { font-family: sans-serif; text-align: center; background: #f0f0f0; padding: 20px; }
-  canvas { border: 1px solid #ccc; margin-top: 20px; }
-  button { margin: 10px; padding: 10px 20px; font-size: 16px; }
+  body { font-family: sans-serif; text-align: center; background: #111; color: #fff; padding: 20px; }
+  canvas { border: 1px solid #444; margin-top: 20px; background: #222; }
+  button { margin: 10px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
 </style>
 </head>
 <body>
 
-<h1>Генератор мультяшных женщин</h1>
+<h1>Художественная генерация женщины</h1>
 <button onclick="generateWoman()">Сгенерировать</button>
 <button onclick="downloadImage()">Скачать</button>
-<canvas id="canvas" width="400" height="500"></canvas>
+<canvas id="canvas" width="400" height="600"></canvas>
 
 <script>
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
+// Случайные числа
 function rand(min,max){ return Math.random()*(max-min)+min; }
-function randColor(){ return `hsl(${rand(0,360)}, ${rand(50,90)}%, ${rand(40,80)}%)`; }
 
-// Генерация женщины
+// Случайный цвет кожи, волос, одежды
+function randColorHue(hueMin,hueMax){ return `hsl(${rand(hueMin,hueMax)}, ${rand(50,90)}%, ${rand(40,90)}%)`; }
+
+// Генерация художественной женщины
 function generateWoman(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
 
-  // фон
-  ctx.fillStyle = `hsl(${rand(0,360)}, 50%, 90%)`;
+  // Фон
+  const bgGradient = ctx.createLinearGradient(0,0,0,canvas.height);
+  bgGradient.addColorStop(0, `hsl(${rand(180,220)}, 50%, 20%)`);
+  bgGradient.addColorStop(1, `hsl(${rand(0,40)}, 70%, 15%)`);
+  ctx.fillStyle = bgGradient;
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  // лицо
-  ctx.fillStyle = `hsl(${rand(20,50)}, 50%, 80%)`;
+  // Тело
+  ctx.fillStyle = randColorHue(20,40);
   ctx.beginPath();
-  ctx.ellipse(200,250,70,90,0,0,2*Math.PI);
+  ctx.ellipse(200,450,60,120,0,0,2*Math.PI);
   ctx.fill();
 
-  // глаза
+  // Лицо
+  ctx.fillStyle = randColorHue(20,40);
+  ctx.beginPath();
+  ctx.ellipse(200,280,50,70,0,0,2*Math.PI);
+  ctx.fill();
+
+  // Волосы (градиентная кисть)
+  const hairGradient = ctx.createLinearGradient(150,200,250,350);
+  hairGradient.addColorStop(0, randColorHue(0,40));
+  hairGradient.addColorStop(1, randColorHue(30,70));
+  ctx.fillStyle = hairGradient;
+  ctx.beginPath();
+  ctx.ellipse(200,260,70,90,0,Math.PI,2*Math.PI);
+  ctx.fill();
+
+  // Глаза
   for(let i=-1;i<=1;i+=2){
     ctx.fillStyle = '#fff';
     ctx.beginPath();
-    ctx.ellipse(200+i*30,240,15,10,0,0,2*Math.PI);
+    ctx.ellipse(200+i*20,270,12,8,0,0,2*Math.PI);
     ctx.fill();
-    ctx.fillStyle = '#000';
+    ctx.fillStyle = '#222';
     ctx.beginPath();
-    ctx.ellipse(200+i*30,240,7,7,0,0,2*Math.PI);
+    ctx.ellipse(200+i*20,270,6,6,0,0,2*Math.PI);
     ctx.fill();
   }
 
-  // рот
-  ctx.strokeStyle = '#900';
-  ctx.lineWidth = 3;
+  // Рот (стилизация)
+  ctx.strokeStyle = `hsl(${rand(0,20)}, 80%, 50%)`;
+  ctx.lineWidth = 2;
   ctx.beginPath();
-  ctx.arc(200,290,25,0,Math.PI);
+  ctx.moveTo(180,310);
+  ctx.quadraticCurveTo(200,320,220,310);
   ctx.stroke();
 
-  // волосы
-  ctx.fillStyle = randColor();
-  ctx.beginPath();
-  ctx.ellipse(200,200,80,100,0,Math.PI,2*Math.PI);
-  ctx.fill();
-
-  // одежда
-  ctx.fillStyle = randColor();
-  ctx.fillRect(130,340,140,120);
+  // Добавим мягкий блик на лице (эффект живого)
+  const faceGradient = ctx.createRadialGradient(200,280,10,200,280,50);
+  faceGradient.addColorStop(0,'rgba(255,255,255,0.3)');
+  faceGradient.addColorStop(1,'rgba(255,255,255,0)');
+  ctx.fillStyle = faceGradient;
+  ctx.fillRect(150,230,100,100);
 }
 
-// Скачать изображение
+// Скачать
 function downloadImage(){
   const link = document.createElement('a');
-  link.download = 'woman.png';
+  link.download = 'artistic_woman.png';
   link.href = canvas.toDataURL();
   link.click();
 }
