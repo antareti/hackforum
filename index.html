@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Генератор случайных изображений</title>
+<title>Генератор мультяшных женщин без файлов</title>
 <style>
   body { font-family: sans-serif; text-align: center; background: #f0f0f0; padding: 20px; }
   canvas { border: 1px solid #ccc; margin-top: 20px; }
@@ -12,63 +12,66 @@
 </head>
 <body>
 
-<h1>Генератор случайных изображений</h1>
-<button onclick="generateImage()">Сгенерировать</button>
+<h1>Генератор мультяшных женщин</h1>
+<button onclick="generateWoman()">Сгенерировать</button>
 <button onclick="downloadImage()">Скачать</button>
-<canvas id="canvas" width="500" height="500"></canvas>
+<canvas id="canvas" width="400" height="500"></canvas>
 
 <script>
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-// Генерация случайного числа в диапазоне
-function rand(min, max) {
-  return Math.random() * (max - min) + min;
-}
+function rand(min,max){ return Math.random()*(max-min)+min; }
+function randColor(){ return `hsl(${rand(0,360)}, ${rand(50,90)}%, ${rand(40,80)}%)`; }
 
-// Генерация случайного цвета
-function randColor() {
-  const r = Math.floor(rand(0,255));
-  const g = Math.floor(rand(0,255));
-  const b = Math.floor(rand(0,255));
-  return `rgb(${r},${g},${b})`;
-}
+// Генерация женщины
+function generateWoman(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
-// Генерация изображения
-function generateImage() {
-  // Фон градиентный
-  const gradient = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
-  gradient.addColorStop(0, randColor());
-  gradient.addColorStop(1, randColor());
-  ctx.fillStyle = gradient;
+  // фон
+  ctx.fillStyle = `hsl(${rand(0,360)}, 50%, 90%)`;
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  // Случайные фигуры
-  for(let i=0;i<30;i++){
-    ctx.fillStyle = randColor();
-    ctx.strokeStyle = randColor();
-    const x = rand(0,canvas.width);
-    const y = rand(0,canvas.height);
-    const size = rand(20,100);
-    if(Math.random()>0.5){
-      ctx.beginPath();
-      ctx.arc(x,y,size/2,0,Math.PI*2);
-      ctx.fill();
-    } else {
-      ctx.fillRect(x,y,size,size);
-    }
-    // линии
+  // лицо
+  ctx.fillStyle = `hsl(${rand(20,50)}, 50%, 80%)`;
+  ctx.beginPath();
+  ctx.ellipse(200,250,70,90,0,0,2*Math.PI);
+  ctx.fill();
+
+  // глаза
+  for(let i=-1;i<=1;i+=2){
+    ctx.fillStyle = '#fff';
     ctx.beginPath();
-    ctx.moveTo(rand(0,canvas.width), rand(0,canvas.height));
-    ctx.lineTo(rand(0,canvas.width), rand(0,canvas.height));
-    ctx.stroke();
+    ctx.ellipse(200+i*30,240,15,10,0,0,2*Math.PI);
+    ctx.fill();
+    ctx.fillStyle = '#000';
+    ctx.beginPath();
+    ctx.ellipse(200+i*30,240,7,7,0,0,2*Math.PI);
+    ctx.fill();
   }
+
+  // рот
+  ctx.strokeStyle = '#900';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.arc(200,290,25,0,Math.PI);
+  ctx.stroke();
+
+  // волосы
+  ctx.fillStyle = randColor();
+  ctx.beginPath();
+  ctx.ellipse(200,200,80,100,0,Math.PI,2*Math.PI);
+  ctx.fill();
+
+  // одежда
+  ctx.fillStyle = randColor();
+  ctx.fillRect(130,340,140,120);
 }
 
 // Скачать изображение
-function downloadImage() {
+function downloadImage(){
   const link = document.createElement('a');
-  link.download = 'generated.png';
+  link.download = 'woman.png';
   link.href = canvas.toDataURL();
   link.click();
 }
