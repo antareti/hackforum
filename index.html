@@ -6,71 +6,111 @@
 <title>Форум доброго хакера</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=VT323&family=Source+Code+Pro&display=swap" rel="stylesheet">
 <style>
-body { font-family: 'Source Code Pro', monospace; background-color: #0a0a0a; color: #00ff00; }
-.header-bg { background-color: #111; border-bottom: 2px solid #222; }
-.main-container { max-width: 1200px; }
+body {
+    font-family: 'Source Code Pro', monospace;
+    background-color: #0a0a0a;
+    color: #00ff00;
+}
+.header-bg { background-color: #111111; border-bottom: 2px solid #222222; }
+.main-container { max-width: 1200px; margin: auto; }
 .section-header { background-color: #1c1c1c; color: #00ff00; border-bottom: 1px solid #3a3a3a; }
 .tab-active { background-color: #1c1c1c; border-color: #00ff00; color: #00ff00; }
 .message-card { background-color: #161616; border: 1px solid #282828; border-left: 3px solid #00ff00; padding: 16px; border-radius: 8px; }
-.vt323 { font-family: 'VT323', monospace; }
+.user-avatar { border: 1px solid #00ff00; border-radius: 50%; margin-right: 8px; }
+textarea { background-color: #0a0a0a; border: 1px solid #00ff00; color: #00ff00; }
 </style>
 </head>
 <body>
 <div class="header-bg py-4 mb-4">
-    <div class="main-container mx-auto flex justify-between items-center px-4">
-        <div class="text-3xl font-bold vt323 text-gray-50">Форум доброго хакера</div>
+    <div class="main-container flex justify-between items-center px-4">
+        <div class="text-3xl font-bold">Форум доброго хакера</div>
+        <button id="admin-toggle" class="px-4 py-2 bg-green-600 rounded text-black font-bold">Админ</button>
     </div>
 </div>
 
-<div class="main-container mx-auto px-4">
-    <div class="bg-green-600 text-black font-bold p-3 text-center rounded-md mb-6">
-        СТАТУС: READ-ONLY. Новые сообщения создаются через GitHub Issues.
-    </div>
+<div class="main-container px-4">
+    <div id="forum-content" class="flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-6">
+        <div class="w-full lg:w-3/4 flex flex-col">
+            <div id="messages-container" class="space-y-4 mb-6">
+                <!-- Сообщения появятся здесь -->
+            </div>
 
-    <div id="messages-container" class="space-y-4">
-        <!-- Сообщения будут подгружаться здесь -->
-    </div>
+            <form id="message-form" class="p-4 rounded-md border border-green-500">
+                <textarea id="message-input" rows="4" class="w-full p-2 mb-2" placeholder="Напишите сообщение..."></textarea>
+                <button type="submit" class="px-4 py-2 bg-green-600 rounded text-black font-bold">Отправить</button>
+            </form>
+        </div>
 
-    <a href="https://github.com/YOUR_USERNAME/YOUR_REPO/issues/new" target="_blank"
-       class="w-full inline-block text-center px-4 py-3 bg-green-600 text-black rounded-lg font-bold mt-6 hover:bg-green-700">
-       Создать сообщение на GitHub
-    </a>
+        <div class="w-full lg:w-1/4">
+            <div class="p-4 rounded-md border border-green-500">
+                <h3 class="font-bold mb-2">Недавняя активность</h3>
+                <div id="recent-activity"></div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-const GITHUB_USER = 'YOUR_USERNAME';
-const GITHUB_REPO = 'YOUR_REPO';
+// Хранение сообщений
+let messages = [
+    {user: 'Админ', text: 'Добро пожаловать на форум!', time: 'только что'}
+];
 
-async function loadMessages() {
-    const url = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/issues`;
-    try {
-        const res = await fetch(url);
-        const issues = await res.json();
-        const container = document.getElementById('messages-container');
-        container.innerHTML = '';
-        issues.forEach(issue => {
-            const div = document.createElement('div');
-            div.className = 'message-card';
-            div.innerHTML = `
-                <div class="flex justify-between items-center mb-2">
-                    <div class="flex items-center text-sm font-semibold">
-                        <img src="${issue.user.avatar_url}" alt="Аватар" class="user-avatar" style="border:1px solid #00ff00;border-radius:50%;margin-right:8px;">
-                        <span class="vt323">${issue.user.login}</span>
-                    </div>
-                    <div class="text-xs" style="color: #888;">${new Date(issue.created_at).toLocaleString()}</div>
+function renderMessages() {
+    const container = document.getElementById('messages-container');
+    container.innerHTML = '';
+    messages.forEach(msg => {
+        const div = document.createElement('div');
+        div.className = 'message-card';
+        div.innerHTML = `
+            <div class="flex justify-between items-center mb-2">
+                <div class="flex items-center text-sm font-semibold">
+                    <img src="https://via.placeholder.com/32" alt="Аватар" class="user-avatar">
+                    <span>${msg.user}</span>
                 </div>
-                <p style="color:#fff;">${issue.body || '(Пустое сообщение)'}</p>
-            `;
-            container.appendChild(div);
-        });
-    } catch(e) {
-        console.error('Ошибка при загрузке сообщений:', e);
-    }
+                <div class="text-xs" style="color: #888;">${msg.time}</div>
+            </div>
+            <p>${msg.text}</p>
+        `;
+        container.appendChild(div);
+    });
+
+    // Обновляем недавнюю активность
+    const recent = document.getElementById('recent-activity');
+    recent.innerHTML = '';
+    messages.slice(-5).reverse().forEach(msg => {
+        const div = document.createElement('div');
+        div.className = 'flex items-center mb-2';
+        div.innerHTML = `
+            <img src="https://via.placeholder.com/32" alt="Avatar" class="user-avatar">
+            <div class="ml-2">
+                <p class="text-sm">${msg.text}</p>
+                <p class="text-xs" style="color: #888;">${msg.user}</p>
+            </div>
+        `;
+        recent.appendChild(div);
+    });
 }
 
-loadMessages();
+document.getElementById('message-form').addEventListener('submit', function(e){
+    e.preventDefault();
+    const input = document.getElementById('message-input');
+    if(input.value.trim() === '') return;
+    messages.push({user: 'Админ', text: input.value, time: 'только что'});
+    input.value = '';
+    renderMessages();
+});
+
+// Инициализация
+renderMessages();
+
+// Админ-панель (отключение формы для всех кроме тебя)
+let adminMode = true;
+document.getElementById('admin-toggle').addEventListener('click', () => {
+    adminMode = !adminMode;
+    document.getElementById('message-form').style.display = adminMode ? 'block' : 'none';
+});
 </script>
 </body>
 </html>
