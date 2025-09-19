@@ -3,118 +3,66 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Продвинутая художественная генерация</title>
+<title>Анимация фотографии</title>
 <style>
-  body { font-family: sans-serif; text-align: center; background: #111; color: #fff; padding: 20px; }
+  body { text-align: center; background: #111; color: #fff; font-family: sans-serif; padding: 20px; }
   canvas { border: 1px solid #444; margin-top: 20px; background: #222; }
-  button { margin: 10px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
-  input { margin: 10px; }
+  input, button { margin: 10px; padding: 10px; font-size: 16px; cursor: pointer; }
 </style>
 </head>
 <body>
 
-<h1>Продвинутая художественная генерация</h1>
+<h1>Анимация фотографии</h1>
 
 <input type="file" id="fileInput" accept="image/*">
 <br>
-<button onclick="transformImage()">Сгенерировать</button>
-<button onclick="downloadImage()">Скачать</button>
+<button onclick="startAnimation()">Начать анимацию</button>
 <canvas id="canvas" width="400" height="600"></canvas>
 
 <script>
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 let img = new Image();
+let angle = 0;
+let animating = false;
 
+// Загрузка изображения
 document.getElementById('fileInput').addEventListener('change', function(e){
   const file = e.target.files[0];
   if(!file) return;
   const reader = new FileReader();
   reader.onload = function(event){
     img.src = event.target.result;
-    img.onload = () => ctx.drawImage(img,0,0,canvas.width,canvas.height);
+    img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
   }
   reader.readAsDataURL(file);
 });
 
-function rand(min,max){ return Math.random()*(max-min)+min; }
-
-// Умные фильтры
-function applySmartFilters() {
-  const imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
-  const data = imageData.data;
-
-  for(let i=0;i<data.length;i+=4){
-    // гармоничные цветовые сдвиги
-    const shift = rand(-30,30);
-    data[i] = Math.min(255, Math.max(0, data[i]+shift));     // R
-    data[i+1] = Math.min(255, Math.max(0, data[i+1]+shift*0.8)); // G
-    data[i+2] = Math.min(255, Math.max(0, data[i+2]+shift*0.5)); // B
-
-    // мягкий контраст
-    const factor = rand(0.9,1.1);
-    data[i] = Math.min(255,data[i]*factor);
-    data[i+1] = Math.min(255,data[i+1]*factor);
-    data[i+2] = Math.min(255,data[i+2]*factor);
-  }
-
-  ctx.putImageData(imageData,0,0);
-
-  // художественные градиенты
-  for(let j=0;j<3;j++){
-    const gradient = ctx.createRadialGradient(
-      rand(50,350), rand(50,300), rand(20,60),
-      rand(100,300), rand(100,500), rand(100,200)
-    );
-    gradient.addColorStop(0, `hsla(${rand(0,360)}, ${rand(30,80)}%, ${rand(40,90)}%, ${rand(0.05,0.2)})`);
-    gradient.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-  }
-
-  // мягкий шум
-  const noiseCanvas = document.createElement('canvas');
-  noiseCanvas.width = canvas.width; noiseCanvas.height = canvas.height;
-  const nCtx = noiseCanvas.getContext('2d');
-  const nData = nCtx.createImageData(canvas.width, canvas.height);
-  for(let i=0;i<nData.data.length;i+=4){
-    const val = rand(0,10);
-    nData.data[i]=nData.data[i+1]=nData.data[i+2]=val;
-    nData.data[i+3]=10;
-  }
-  nCtx.putImageData(nData,0,0);
-  ctx.drawImage(noiseCanvas,0,0);
-
-  // размытие/смещение для живописного эффекта
-  ctx.globalAlpha = 0.1;
-  for(let k=0;k<4;k++){
-    ctx.drawImage(canvas, rand(-4,4), rand(-4,4), canvas.width, canvas.height);
-  }
-  ctx.globalAlpha = 1;
-
-  // виньетирование
-  const vignette = ctx.createRadialGradient(
-    canvas.width/2, canvas.height/2, canvas.width/2*0.5,
-    canvas.width/2, canvas.height/2, canvas.width/2
-  );
-  vignette.addColorStop(0,'rgba(0,0,0,0)');
-  vignette.addColorStop(1,'rgba(0,0,0,0.3)');
-  ctx.fillStyle = vignette;
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-}
-
-function transformImage(){
-  if(!img.src) return alert("Сначала загрузите изображение!");
+// Анимация
+function animate(){
+  if(!animating) return;
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.drawImage(img,0,0,canvas.width,canvas.height);
-  applySmartFilters();
+
+  // Небольшое колебание изображения (имитация дыхания / движения головы)
+  const dx = Math.sin(angle) * 5;
+  const dy = Math.cos(angle*1.2) * 3;
+  const scale = 1 + Math.sin(angle*0.7)*0.02;
+
+  ctx.save();
+  ctx.translate(canvas.width/2 + dx, canvas.height/2 + dy);
+  ctx.scale(scale, scale);
+  ctx.drawImage(img, -canvas.width/2, -canvas.height/2, canvas.width, canvas.height);
+  ctx.restore();
+
+  angle += 0.05;
+  requestAnimationFrame(animate);
 }
 
-function downloadImage(){
-  const link = document.createElement('a');
-  link.download = 'artistic_smart.png';
-  link.href = canvas.toDataURL();
-  link.click();
+function startAnimation(){
+  if(!img.src) return alert("Сначала загрузите изображение!");
+  if(animating) return;
+  animating = true;
+  animate();
 }
 </script>
 
