@@ -146,42 +146,29 @@
         <div class="main-container mx-auto flex justify-between items-center px-4">
             <div id="forum-title" class="text-3xl font-bold vt323 text-gray-50 glitch-text">Форум доброго хакера</div>
             <nav id="auth-links">
-                <a href="#" id="link-register" class="text-gray-400 hover:text-white mx-2"><i class="fas fa-user-plus"></i> Register</a>
-                <a href="#" id="link-login" class="text-gray-400 hover:text-white mx-2"><i class="fas fa-sign-in-alt"></i> Login</a>
-                <a href="#" id="link-logout" class="text-gray-400 hover:text-white mx-2 hidden"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <a href="#" id="link-logout" class="text-gray-400 hover:text-white mx-2"><i class="fas fa-sign-out-alt"></i> Выход</a>
             </nav>
         </div>
     </div>
     
     <div class="main-container mx-auto px-4">
         <div class="bg-green-600 text-white font-bold p-3 text-center rounded-md mb-6 glitch-text" style="background-color: #00ff00; color: #1a1a1a;">
-            STATUS: ACTIVE. ACCESS GRANTED TO ALL BETA TESTERS.
+            СТАТУС: ЛОКАЛЬНАЯ СИМУЛЯЦИЯ. СООБЩЕНИЯ ВИДНЫ ТОЛЬКО ВАМ.
         </div>
 
-        <!-- AUTH FORMS -->
-        <div id="auth-forms" class="bg-gray-800 p-8 rounded-lg max-w-md mx-auto hidden" style="background-color: #1a1a1a;">
-            <h2 id="auth-form-title" class="text-2xl font-bold mb-4 text-white text-center glitch-text" style="color: #00ff00;">Login</h2>
-            <form id="auth-form" class="auth-form space-y-4">
-                <input type="email" id="email" placeholder="LOGIN (email)" class="p-3 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2" style="background-color: #0a0a0a; border-color: #00ff00; color: #00ff00;">
-                <input type="password" id="password" placeholder="PASSWORD" class="p-3 rounded-lg bg-gray-900 border border-gray-700 text-white focus:outline-none focus:ring-2" style="background-color: #0a0a0a; border-color: #00ff00; color: #00ff00;">
-                <button type="submit" class="px-4 py-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 transition-colors" style="background-color: #00ff00; color: #1a1a1a;">SUBMIT</button>
-                <p id="auth-error-message" class="text-red-500 text-sm text-center hidden"></p>
-            </form>
-        </div>
-        
-        <div id="forum-content" class="flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-6 hidden">
-            <!-- Left Panel -->
+        <div id="forum-content" class="flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-6">
+            <!-- Левая панель -->
             <div class="w-full lg:w-3/4 flex flex-col">
                 <div id="tab-buttons" class="flex space-x-2 border-b border-gray-700 mb-4" style="border-color: #00ff00;">
-                    <button data-tab="general" class="tab-button px-4 py-2 rounded-t-md text-sm font-semibold tab-active" style="border-color: #00ff00;">General</button>
-                    <button data-tab="hacking" class="tab-button px-4 py-2 rounded-t-md text-sm font-semibold hover:bg-gray-700">Hacking</button>
-                    <button data-tab="leaks" class="tab-button px-4 py-2 rounded-t-md text-sm font-semibold hover:bg-gray-700">Leaks</button>
-                    <button data-tab="coding" class="tab-button px-4 py-2 rounded-t-md text-sm font-semibold hover:bg-gray-700"><i class="fas fa-code"></i> Coding</button>
-                    <button data-tab="marketplace" class="tab-button px-4 py-2 rounded-t-md text-sm font-semibold hover:bg-gray-700"><i class="fas fa-store"></i> Marketplace</button>
+                    <button data-tab="general" class="tab-button px-4 py-2 rounded-t-md text-sm font-semibold tab-active" style="border-color: #00ff00;">Общие</button>
+                    <button data-tab="hacking" class="tab-button px-4 py-2 rounded-t-md text-sm font-semibold hover:bg-gray-700">Взлом</button>
+                    <button data-tab="leaks" class="tab-button px-4 py-2 rounded-t-md text-sm font-semibold hover:bg-gray-700">Утечки</button>
+                    <button data-tab="coding" class="tab-button px-4 py-2 rounded-t-md text-sm font-semibold hover:bg-gray-700"><i class="fas fa-code"></i> Кодинг</button>
+                    <button data-tab="marketplace" class="tab-button px-4 py-2 rounded-t-md text-sm font-semibold hover:bg-gray-700"><i class="fas fa-store"></i> Маркет</button>
                 </div>
 
                 <div class="p-4 rounded-md" style="background-color: #1a1a1a;">
-                    <h2 id="section-title" class="text-white text-lg font-semibold mb-4 glitch-text" style="color: #00ff00;">General</h2>
+                    <h2 id="section-title" class="text-white text-lg font-semibold mb-4 glitch-text" style="color: #00ff00;">Общие</h2>
                     
                     <div id="messages-container" class="space-y-4 mb-6">
                         <!-- Сообщения будут добавлены сюда -->
@@ -191,8 +178,8 @@
                         <h2 class="text-xl font-semibold mb-4 text-white glitch-text" style="color: #00ff00;">Новое сообщение</h2>
                         <div class="mb-4">
                             <div class="flex items-center space-x-2 mb-2">
-                                <img id="current-avatar-preview" class="user-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23ccc' d='M12 2A10 10 0 1 0 12 22A10 10 0 1 0 12 2Zm0 3.75a3 3 0 1 1-3 3A3 3 0 0 1 12 5.75ZM12 20.5a8.5 8.5 0 0 1-6.19-2.5A6.5 6.5 0 0 1 12 14.5a6.5 6.5 0 0 1 6.19 3.5A8.5 8.5 0 0 1 12 20.5Z'/%3E%3C/svg%3E" alt="Аватар" style="border-color: #00ff00;">
-                                <span id="avatar-status-message" class="text-sm text-gray-400" style="color: #888;">Наберите 1 балл, чтобы выбрать аватар.</span>
+                                <img id="current-avatar-preview" class="user-avatar" src="" alt="Аватар" style="border-color: #00ff00;">
+                                <span id="avatar-status-message" class="text-sm text-gray-400" style="color: #888;"></span>
                             </div>
                             <div id="avatar-selection" class="avatar-container mt-2 opacity-50 pointer-events-none">
                                 <!-- Аватары будут добавлены здесь -->
@@ -204,7 +191,7 @@
                 </div>
             </div>
 
-            <!-- Right Sidebar -->
+            <!-- Правый сайдбар -->
             <div class="w-full lg:w-1/4 space-y-4">
                 <div class="p-4 rounded-md" style="background-color: #1a1a1a; border: 1px solid #00ff00;">
                     <p id="admin-status" class="text-sm font-semibold text-gray-400 text-center mb-2" style="color: #888;">Статус: Обычный пользователь</p>
@@ -236,31 +223,20 @@
             </div>
         </div>
 
-        <p id="user-info" class="text-sm font-bold text-gray-400 mt-6 text-center hidden" style="color: #00ff00;">
-            <span id="user-id-display">Ваш ID: Загрузка...</span> | 
+        <p id="user-info" class="text-sm font-bold text-gray-400 mt-6 text-center" style="color: #00ff00;">
+            <span id="user-id-display">Ваш ID: Гость</span> | 
             <span id="user-points-display">0 баллов</span>
         </p>
     </div>
     
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, updateDoc, deleteDoc, onSnapshot, collection, query, where, addDoc, getDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        
-        // Глобальные переменные, предоставляемые средой Canvas.
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-        
-        let app, db, auth;
+    <script>
+        // Глобальные переменные
         let userId;
         let isAdmin = false;
         let userPoints = 0;
         let userAvatar = '';
         let messages = [];
         let activeTabId = 'general';
-        let isAuthReady = false;
-        let isRegistering = false;
         
         // Элементы DOM
         const messagesContainer = document.getElementById('messages-container');
@@ -277,18 +253,7 @@
         const avatarStatusMessage = document.getElementById('avatar-status-message');
         const userIdDisplay = document.getElementById('user-id-display');
         const userPointsDisplay = document.getElementById('user-points-display');
-        const authLinks = document.getElementById('auth-links');
-        const linkRegister = document.getElementById('link-register');
-        const linkLogin = document.getElementById('link-login');
         const linkLogout = document.getElementById('link-logout');
-        const authForms = document.getElementById('auth-forms');
-        const forumContent = document.getElementById('forum-content');
-        const userInfo = document.getElementById('user-info');
-        const authFormTitle = document.getElementById('auth-form-title');
-        const authForm = document.getElementById('auth-form');
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        const authErrorMessage = document.getElementById('auth-error-message');
         
         const ADMIN_PASSWORD = "Muraba1977";
         const ADMIN_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%2300ff00' d='M12 1L2 5v6c0 5.55 3.84 10.74 9 12a21.46 21.46 0 0 0 9-12V5L12 1Zm0 1.95 7 3V11c0 4.1-2.9 8.24-7 9.87a21.46 21.46 0 0 1-7-9.87V4.95l7-3Z'/%3E%3C/svg%3E";
@@ -303,74 +268,56 @@
             "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%233498db' d='M12 2A10 10 0 1 0 12 22A10 10 0 1 0 12 2Zm.5 14a.5.5 0 0 1-.5.5h-5.5a.5.5 0 0 1-.5-.5v-4.5a.5.5 0 0 1 .5-.5h5.5a.5.5 0 0 1 .5.5Z'/%3E%3C/svg%3E"
         ];
         
-        // Инициализация Firebase
-        const initFirebase = async () => {
-            app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            auth = getAuth(app);
-            
-            // Прослушивание изменений состояния аутентификации
-            onAuthStateChanged(auth, async (user) => {
-                isAuthReady = true;
-                if (user) {
-                    userId = user.uid;
-                    await loadUserProfile();
-                    hideAuthForms();
-                    showForumContent();
-                } else {
-                    userId = null;
-                    hideForumContent();
-                    showAuthForms('login');
-                }
-                updateUI();
-            });
-            
-            // Попытка входа с кастомным токеном, если он предоставлен
-            if (initialAuthToken) {
-                try {
-                    await signInWithCustomToken(auth, initialAuthToken);
-                } catch (e) {
-                    await signInAnonymously(auth);
-                }
+        // Захардкоженные сообщения для имитации контента
+        const HARDCODED_MESSAGES = {
+            'general': [
+                { id: 1, text: 'Добро пожаловать на форум! Пожалуйста, прочтите правила.', timestamp: Date.now() - 3600000, isAdmin: true, userId: 'admin', userAvatar: ADMIN_AVATAR, points: 5 },
+                { id: 2, text: 'Привет! Есть кто-нибудь новенький?', timestamp: Date.now() - 7200000, isAdmin: false, userId: 'user123', userAvatar: AVATARS[0], points: 2 }
+            ],
+            'hacking': [
+                { id: 3, text: 'Ищу советы по тестированию безопасности веб-приложений. С чего начать?', timestamp: Date.now() - 10800000, isAdmin: false, userId: 'cyborg7', userAvatar: AVATARS[1], points: 1 }
+            ],
+            'leaks': [
+                { id: 4, text: 'Обнаружена крупная утечка данных. Кто может помочь проверить подлинность?', timestamp: Date.now() - 14400000, isAdmin: false, userId: 'ghost88', userAvatar: AVATARS[2], points: 0 }
+            ],
+            'coding': [
+                { id: 5, text: 'Посоветуйте лучшие ресурсы по Python для хакинга.', timestamp: Date.now() - 18000000, isAdmin: false, userId: 'code_wiz', userAvatar: AVATARS[3], points: 3 }
+            ],
+            'marketplace': [
+                { id: 6, text: 'Продаю скрипт для автоматизации. Подробности в личке.', timestamp: Date.now() - 21600000, isAdmin: false, userId: 'vendorX', userAvatar: AVATARS[4], points: 0 }
+            ]
+        };
+        
+        // Инициализация локального профиля
+        const initUser = () => {
+            const storedUser = localStorage.getItem('hackerForumUser');
+            if (storedUser) {
+                const userData = JSON.parse(storedUser);
+                userId = userData.userId;
+                isAdmin = userData.isAdmin;
+                userPoints = userData.points;
+                userAvatar = userData.avatar;
             } else {
-                await signInAnonymously(auth);
+                // Генерация нового пользователя, если он не найден в локальном хранилище
+                userId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+                isAdmin = false;
+                userPoints = 0;
+                userAvatar = DEFAULT_AVATAR;
+                saveUser();
             }
         };
 
-        const loadUserProfile = async () => {
-            if (!userId) return;
-            const userDocRef = doc(db, `/artifacts/${appId}/public/data/users`, userId);
-            const userDoc = await getDoc(userDocRef);
-            if (userDoc.exists()) {
-                const data = userDoc.data();
-                userPoints = data.points || 0;
-                userAvatar = data.avatar || DEFAULT_AVATAR;
-                isAdmin = data.isAdmin || false; // Обновление статуса админа из документа
-            } else {
-                // Создание профиля, если его нет
-                await setDoc(userDocRef, {
-                    userId: userId,
-                    points: 0,
-                    avatar: DEFAULT_AVATAR,
-                    isAdmin: false
-                });
-                userPoints = 0;
-                userAvatar = DEFAULT_AVATAR;
-                isAdmin = false;
-            }
-
-            if (isAdmin) {
-                adminStatus.textContent = 'Статус: Администратор';
-                adminStatus.className = 'text-sm font-semibold text-green-500 text-center mb-2';
-            } else {
-                adminStatus.textContent = 'Статус: Обычный пользователь';
-                adminStatus.className = 'text-sm font-semibold text-gray-400 text-center mb-2';
-            }
+        const saveUser = () => {
+            localStorage.setItem('hackerForumUser', JSON.stringify({
+                userId,
+                isAdmin,
+                userPoints,
+                userAvatar
+            }));
+            updateUI();
         };
 
         const updateUI = () => {
-            if (!isAuthReady) return;
-            
             userIdDisplay.textContent = `Ваш ID: ${userId || 'Гость'}`;
             userPointsDisplay.textContent = `${userPoints} баллов`;
             currentAvatarPreview.src = userAvatar;
@@ -388,8 +335,12 @@
             
             if (isAdmin) {
                 document.body.classList.add('is-admin');
+                adminStatus.textContent = 'Статус: Администратор';
+                adminStatus.className = 'text-sm font-semibold text-green-500 text-center mb-2';
             } else {
                 document.body.classList.remove('is-admin');
+                adminStatus.textContent = 'Статус: Обычный пользователь';
+                adminStatus.className = 'text-sm font-semibold text-gray-400 text-center mb-2';
             }
         };
 
@@ -406,9 +357,17 @@
 
         const renderMessages = () => {
             messagesContainer.innerHTML = '';
-            messages.sort((a, b) => b.timestamp - a.timestamp);
+            
+            // Получаем захардкоженные сообщения для текущей вкладки
+            const hardcodedForTab = HARDCODED_MESSAGES[activeTabId] || [];
+            
+            // Объединяем их с сообщениями из локального хранилища
+            const localMessages = JSON.parse(localStorage.getItem(`messages_${activeTabId}`) || '[]');
+            const allMessages = [...hardcodedForTab, ...localMessages];
+            
+            allMessages.sort((a, b) => b.timestamp - a.timestamp);
 
-            messages.forEach(msg => {
+            allMessages.forEach(msg => {
                 const messageEl = document.createElement('div');
                 messageEl.className = `message-card p-4 rounded-lg shadow-lg transition-transform transform hover:scale-105 ${msg.isAdmin ? 'pulse-animation' : ''}`;
                 messageEl.dataset.id = msg.id;
@@ -466,196 +425,83 @@
             });
         };
         
-        const listenToMessages = () => {
-            if (!isAuthReady) return;
-
-            const q = query(collection(db, `/artifacts/${appId}/public/data/messages`), where('tab', '==', activeTabId));
-            onSnapshot(q, (snapshot) => {
-                messages = [];
-                snapshot.forEach((doc) => {
-                    messages.push({ ...doc.data(), id: doc.id });
-                });
-                renderMessages();
-            });
-        };
-
-        const showAuthForms = (formType) => {
-            authForms.classList.remove('hidden');
-            forumContent.classList.add('hidden');
-            userInfo.classList.add('hidden');
-            if (formType === 'login') {
-                authFormTitle.textContent = 'Login';
-                isRegistering = false;
-            } else {
-                authFormTitle.textContent = 'Register';
-                isRegistering = true;
-            }
-            linkRegister.classList.remove('hidden');
-            linkLogin.classList.remove('hidden');
-            linkLogout.classList.add('hidden');
-        };
-
-        const hideAuthForms = () => {
-            authForms.classList.add('hidden');
-            linkRegister.classList.add('hidden');
-            linkLogin.classList.add('hidden');
-            linkLogout.classList.remove('hidden');
-        };
-
-        const showForumContent = () => {
-            forumContent.classList.remove('hidden');
-            userInfo.classList.remove('hidden');
-            listenToMessages();
-        };
-
-        const hideForumContent = () => {
-            forumContent.classList.add('hidden');
-            userInfo.classList.add('hidden');
-        };
-
         // Обработчики событий
-        linkRegister.addEventListener('click', (e) => {
-            e.preventDefault();
-            showAuthForms('register');
-        });
+        const setupListeners = () => {
+             linkLogout.addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('hackerForumUser');
+                window.location.reload();
+            });
 
-        linkLogin.addEventListener('click', (e) => {
-            e.preventDefault();
-            showAuthForms('login');
-        });
-
-        linkLogout.addEventListener('click', async (e) => {
-            e.preventDefault();
-            try {
-                await signOut(auth);
-                await signInAnonymously(auth); // Возврат к анонимному пользователю
-                
-            } catch (error) {
-                console.error('Logout error:', error);
-            }
-        });
-
-        authForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = emailInput.value;
-            const password = passwordInput.value;
-            authErrorMessage.classList.add('hidden');
-            
-            try {
-                if (isRegistering) {
-                    await createUserWithEmailAndPassword(auth, email, password);
-                } else {
-                    await signInWithEmailAndPassword(auth, email, password);
+            tabButtonsContainer.addEventListener('click', (e) => {
+                const tab = e.target.closest('.tab-button');
+                if (tab) {
+                    activeTabId = tab.dataset.tab;
+                    updateTabButtons();
+                    renderMessages();
                 }
-            } catch (error) {
-                authErrorMessage.textContent = error.message;
-                authErrorMessage.classList.remove('hidden');
-            }
-        });
+            });
 
-        tabButtonsContainer.addEventListener('click', (e) => {
-            const tab = e.target.closest('.tab-button');
-            if (tab) {
-                activeTabId = tab.dataset.tab;
-                updateTabButtons();
-                listenToMessages();
-            }
-        });
-
-        newForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const text = messageTextarea.value.trim();
-            if (text && userId) {
-                await addDoc(collection(db, `/artifacts/${appId}/public/data/messages`), {
-                    text,
-                    timestamp: Date.now(),
-                    isAdmin: isAdmin,
-                    userId,
-                    userAvatar,
-                    points: 0,
-                    tab: activeTabId
-                });
-                messageTextarea.value = '';
-            }
-        });
-        
-        const handleDeleteMessage = async (e) => {
-            if (!isAdmin) return;
-            const messageId = e.target.closest('.message-card').dataset.id;
-            const docRef = doc(db, `/artifacts/${appId}/public/data/messages`, messageId);
-            try {
-                await deleteDoc(docRef);
-            } catch (error) {
-                console.error("Error deleting document: ", error);
-            }
-        };
-
-        const handleAdminAddPoints = async (e) => {
-            if (!isAdmin) return;
-            const messageId = e.target.closest('.message-card').dataset.id;
-            const userIdToUpdate = e.target.dataset.userId;
-            const messageDocRef = doc(db, `/artifacts/${appId}/public/data/messages`, messageId);
-            const userDocRef = doc(db, `/artifacts/${appId}/public/data/users`, userIdToUpdate);
-            try {
-                // Добавляем балл к сообщению
-                await updateDoc(messageDocRef, { points: messages.find(m => m.id === messageId).points + 1 });
-                // Добавляем балл пользователю
-                const userDoc = await getDoc(userDocRef);
-                if (userDoc.exists()) {
-                    await updateDoc(userDocRef, { points: userDoc.data().points + 1 });
-                }
-            } catch (error) {
-                console.error("Error adding points: ", error);
-            }
-        };
-
-        const handleUpvote = async (e) => {
-            const messageId = e.target.closest('.message-card').dataset.id;
-            const messageDocRef = doc(db, `/artifacts/${appId}/public/data/messages`, messageId);
-            const messageIndex = messages.findIndex(m => m.id === messageId);
-            if (messageIndex > -1) {
-                try {
-                    await updateDoc(messageDocRef, { points: messages[messageIndex].points + 1 });
-                    const userDocRef = doc(db, `/artifacts/${appId}/public/data/users`, userId);
-                    await updateDoc(userDocRef, { points: userPoints + 1 });
-                } catch (error) {
-                    console.error("Error upvoting message: ", error);
-                }
-            }
-        };
-
-        avatarSelection.addEventListener('click', async (e) => {
-            if (e.target.classList.contains('avatar-option')) {
-                if (userPoints > 0 || isAdmin) {
-                    const newAvatarUrl = e.target.dataset.url;
-                    try {
-                        const userDocRef = doc(db, `/artifacts/${appId}/public/data/users`, userId);
-                        await updateDoc(userDocRef, { avatar: newAvatarUrl });
-                    } catch (error) {
-                        console.error("Error updating avatar: ", error);
-                    }
-                } else {
+            newForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const text = messageTextarea.value.trim();
+                if (text) {
+                    const localMessages = JSON.parse(localStorage.getItem(`messages_${activeTabId}`) || '[]');
+                    const newMessage = {
+                        id: localMessages.length + 1,
+                        text,
+                        timestamp: Date.now(),
+                        isAdmin: isAdmin,
+                        userId,
+                        userAvatar,
+                        points: 0,
+                        tab: activeTabId
+                    };
+                    localMessages.push(newMessage);
+                    localStorage.setItem(`messages_${activeTabId}`, JSON.stringify(localMessages));
+                    messageTextarea.value = '';
+                    renderMessages();
+                    
                     const modal = document.createElement('div');
                     modal.innerHTML = `
                         <div class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
                             <div class="bg-gray-800 p-8 rounded-lg border border-gray-700 text-white max-w-sm text-center">
-                                <p class="mb-4">Наберите 1 балл, чтобы выбрать аватар!</p>
+                                <p class="mb-4">Сообщение отправлено, но оно видно только вам. Для многопользовательской работы нужен сервер.</p>
                                 <button onclick="this.closest('.fixed').remove()" class="px-4 py-2 bg-green-600 rounded-md">OK</button>
                             </div>
                         </div>
                     `;
                     document.body.appendChild(modal);
                 }
-            }
-        });
+            });
+            
+            avatarSelection.addEventListener('click', (e) => {
+                if (e.target.classList.contains('avatar-option')) {
+                    if (userPoints > 0 || isAdmin) {
+                        userAvatar = e.target.dataset.url;
+                        saveUser();
+                    } else {
+                        const modal = document.createElement('div');
+                        modal.innerHTML = `
+                            <div class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+                                <div class="bg-gray-800 p-8 rounded-lg border border-gray-700 text-white max-w-sm text-center">
+                                    <p class="mb-4">Наберите 1 балл, чтобы выбрать аватар!</p>
+                                    <button onclick="this.closest('.fixed').remove()" class="px-4 py-2 bg-green-600 rounded-md">OK</button>
+                                </div>
+                            </div>
+                        `;
+                        document.body.appendChild(modal);
+                    }
+                }
+            });
 
-        adminLoginBtn.addEventListener('click', async () => {
-            const password = adminPassInput.value.trim();
-            const userDocRef = doc(db, `/artifacts/${appId}/public/data/users`, userId);
-
-            if (password === ADMIN_PASSWORD) {
-                try {
-                    await updateDoc(userDocRef, { isAdmin: true, avatar: ADMIN_AVATAR });
+            adminLoginBtn.addEventListener('click', () => {
+                const password = adminPassInput.value.trim();
+                if (password === ADMIN_PASSWORD) {
+                    isAdmin = true;
+                    userAvatar = ADMIN_AVATAR;
+                    saveUser();
+                    renderMessages();
                     const modal = document.createElement('div');
                     modal.innerHTML = `
                         <div class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
@@ -666,24 +512,46 @@
                         </div>
                     `;
                     document.body.appendChild(modal);
-                } catch (error) {
-                    console.error("Error updating user document to admin: ", error);
-                }
-            } else {
-                const modal = document.createElement('div');
-                modal.innerHTML = `
-                    <div class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
-                        <div class="bg-gray-800 p-8 rounded-lg border border-gray-700 text-white max-w-sm text-center">
-                            <p class="mb-4">Неверный пароль администратора.</p>
-                            <button onclick="this.closest('.fixed').remove()" class="px-4 py-2 bg-red-600 rounded-md">OK</button>
+                } else {
+                    const modal = document.createElement('div');
+                    modal.innerHTML = `
+                        <div class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+                            <div class="bg-gray-800 p-8 rounded-lg border border-gray-700 text-white max-w-sm text-center">
+                                <p class="mb-4">Неверный пароль администратора.</p>
+                                <button onclick="this.closest('.fixed').remove()" class="px-4 py-2 bg-red-600 rounded-md">OK</button>
+                            </div>
                         </div>
-                    </div>
-                `;
-                document.body.appendChild(modal);
-            }
-        });
+                    `;
+                    document.body.appendChild(modal);
+                }
+            });
+        };
         
-        initFirebase();
+        const handleDeleteMessage = (e) => {
+            if (!isAdmin) return;
+            const messageId = e.target.closest('.message-card').dataset.id;
+            const localMessages = JSON.parse(localStorage.getItem(`messages_${activeTabId}`) || '[]');
+            const updatedMessages = localMessages.filter(msg => msg.id != messageId);
+            localStorage.setItem(`messages_${activeTabId}`, JSON.stringify(updatedMessages));
+            renderMessages();
+        };
+
+        const handleAdminAddPoints = (e) => {
+            if (!isAdmin) return;
+            userPoints++;
+            saveUser();
+            renderMessages();
+        };
+
+        const handleUpvote = (e) => {
+            userPoints++;
+            saveUser();
+            renderMessages();
+        };
+        
+        initUser();
+        setupListeners();
+        renderMessages();
     </script>
 </body>
 </html>
